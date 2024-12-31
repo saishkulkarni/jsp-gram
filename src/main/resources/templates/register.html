@@ -30,6 +30,9 @@
             max-width: 500px;
         }
 
+        .register-container span{
+            color: red;
+        }
         .register-title {
             text-align: center;
             color: #1a73e8;
@@ -106,44 +109,52 @@
 <body>
     <div class="register-container">
         <h2 class="register-title">Create Account</h2>
-        <form action="/register" method="POST">
+        <form action="/register" method="POST" th:object="${user}">
             <div class="form-group">
                 <label for="firstname">First Name</label>
-                <input type="text" id="firstname" name="firstname">
+                <input th:field="*{firstname}" type="text" id="firstname" name="firstname">
+                <span th:errors="*{firstname}"></span>
             </div>
             <div class="form-group">
                 <label for="lastname">Last Name</label>
-                <input type="text" id="lastname" name="lastname">
+                <input th:field="*{lastname}" type="text" id="lastname" name="lastname">
+                <span th:errors="*{lastname}"></span>
             </div>
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username">
+                <input th:field="*{username}" type="text" id="username" name="username">
+                <span th:errors="*{username}"></span>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email">
+                <input th:field="*{email}" type="text" id="email" name="email">
+                <span th:errors="*{email}"></span>
             </div>
             <div class="form-group">
                 <label for="mobile">Mobile Number</label>
-                <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}">
+                <input type="text" th:field="*{mobile}" id="mobile" name="mobile">
+                <span th:errors="*{mobile}"></span>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password">
+                <input th:field="*{password}" type="text" id="password" name="password">
+                <span th:errors="*{password}"></span>
             </div>
             <div class="form-group">
                 <label for="confirmpassword">Confirm Password</label>
-                <input type="password" id="confirmpassword" name="confirmpassword">
+                <input th:field="*{confirmpassword}" type="text" id="confirmpassword" name="confirmpassword">
+                <span th:errors="*{confirmpassword}"></span>
             </div>
             <div class="form-group">
                 <label>Gender</label>
                 <div class="gender-group">
-                    <input type="radio" id="male" name="gender" value="male">
+                    <input th:field="*{gender}" type="radio" id="male" name="gender" value="male">
                     <label for="male">Male</label>
-                    <input type="radio" id="female" name="gender" value="female">
+                    <input th:field="*{gender}" type="radio" id="female" name="gender" value="female">
                     <label for="female">Female</label>
-                    <input type="radio" id="other" name="gender" value="other">
+                    <input th:field="*{gender}" type="radio" id="other" name="gender" value="other">
                     <label for="other">Other</label>
+                    <span th:errors="*{gender}"></span>
                 </div>
             </div>
             <button type="submit" class="register-button">Register</button>
