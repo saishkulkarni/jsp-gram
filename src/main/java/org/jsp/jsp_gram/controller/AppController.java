@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -30,8 +31,8 @@ public class AppController {
 	}
 
 	@PostMapping("/register")
-	public String register(@Valid User user, BindingResult result) {
-		return service.register(user, result);
+	public String register(@Valid User user, BindingResult result,HttpSession session) {
+		return service.register(user, result,session);
 	}
 
 	@GetMapping("/otp/{id}")
@@ -41,7 +42,7 @@ public class AppController {
 	}
 
 	@PostMapping("/verify-otp")
-	public String verifyOtp(@RequestParam int otp,@RequestParam int id) {
-		return service.verifyOtp(otp,id);
+	public String verifyOtp(@RequestParam int otp,@RequestParam int id,HttpSession session) {
+		return service.verifyOtp(otp,id,session);
 	}
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class UserService {
 
@@ -25,7 +27,7 @@ public class UserService {
 		return "register.html";
 	}
 
-	public String register(User user, BindingResult result) {
+	public String register(User user, BindingResult result, HttpSession session) {
 		if (!user.getPassword().equals(user.getConfirmpassword()))
 			result.rejectValue("confirmpassword", "error.confirmpassword", "Passwords not Matching");
 
@@ -45,20 +47,23 @@ public class UserService {
 			int otp = new Random().nextInt(100000, 1000000);
 			user.setOtp(otp);
 			System.err.println(otp);
-			//emailSender.sendOtp(user.getEmail(), otp, user.getFirstname());
+			// emailSender.sendOtp(user.getEmail(), otp, user.getFirstname());
 			repository.save(user);
+			session.setAttribute("pass", "Otp Sent Success");
 			return "redirect:/otp/" + user.getId();
 		}
 	}
 
-	public String verifyOtp(int otp, int id) {
+	public String verifyOtp(int otp, int id, HttpSession session) {
 		User user = repository.findById(id).get();
 		if (user.getOtp() == otp) {
 			user.setVerified(true);
 			user.setOtp(0);
 			repository.save(user);
+			session.setAttribute("pass", "Account Created Success");
 			return "redirect:/login";
 		} else {
+			session.setAttribute("fail", "Invalid Otp, Try Again!!!");
 			return "redirect:/otp/" + id;
 		}
 
