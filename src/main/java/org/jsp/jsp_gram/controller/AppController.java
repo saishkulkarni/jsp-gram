@@ -31,18 +31,24 @@ public class AppController {
 	}
 
 	@PostMapping("/register")
-	public String register(@Valid User user, BindingResult result,HttpSession session) {
-		return service.register(user, result,session);
+	public String register(@Valid User user, BindingResult result, HttpSession session) {
+		return service.register(user, result, session);
 	}
 
 	@GetMapping("/otp/{id}")
-	public String loadOtpPage(@PathVariable int id,ModelMap map) {
+	public String loadOtpPage(@PathVariable int id, ModelMap map) {
 		map.put("id", id);
 		return "user-otp.html";
 	}
 
 	@PostMapping("/verify-otp")
-	public String verifyOtp(@RequestParam int otp,@RequestParam int id,HttpSession session) {
-		return service.verifyOtp(otp,id,session);
+	public String verifyOtp(@RequestParam int otp, @RequestParam int id, HttpSession session) {
+		return service.verifyOtp(otp, id, session);
 	}
+
+	@GetMapping("/resend-otp/{id}")
+	public String resendOtp(@PathVariable int id, HttpSession session) {
+		return service.resendOtp(id, session);
+	}
+
 }
