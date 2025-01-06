@@ -51,4 +51,18 @@ public class AppController {
 		return service.resendOtp(id, session);
 	}
 
+	@PostMapping("/login")
+	public String login(@RequestParam String username, @RequestParam String password, HttpSession session) {
+		return service.login(username, password, session);
+	}
+
+	@GetMapping("/home")
+	public String loadHome(HttpSession session) {
+		return service.loadHome(session);
+	}
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		return service.logout(session);
+	}
 }
