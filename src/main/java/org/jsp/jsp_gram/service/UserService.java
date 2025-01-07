@@ -4,12 +4,14 @@ import java.util.Random;
 
 import org.jsp.jsp_gram.dto.User;
 import org.jsp.jsp_gram.helper.AES;
+import org.jsp.jsp_gram.helper.CloudinaryHelper;
 import org.jsp.jsp_gram.helper.EmailSender;
 import org.jsp.jsp_gram.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -21,6 +23,9 @@ public class UserService {
 
 	@Autowired
 	EmailSender emailSender;
+
+	@Autowired
+	CloudinaryHelper cloudinaryHelper;
 
 	public String loadRegister(ModelMap map, User user) {
 		map.put("user", user);
@@ -121,6 +126,39 @@ public class UserService {
 		session.removeAttribute("user");
 		session.setAttribute("pass", "Logout Success");
 		return "redirect:/login";
+	}
+
+	public String profile(HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			return "profile.html";
+		} else {
+			session.setAttribute("fail", "Invalid Session");
+			return "redirect:/login";
+		}
+	}
+
+	public String editProfile(HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			return "edit-profile.html";
+		} else {
+			session.setAttribute("fail", "Invalid Session");
+			return "redirect:/login";
+		}
+	}
+
+	public String updateProfile(HttpSession session, MultipartFile image, String bio) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			user.setBio(bio);
+			user.setImageUrl(cloudinaryHelper.saveImage(image));
+			repository.save(user);
+			return "redirect:/profile";
+		} else {
+			session.setAttribute("fail", "Invalid Session");
+			return "redirect:/login";
+		}
 	}
 
 }
