@@ -191,8 +191,29 @@
             </div>
         </section>
 
+        <div th:if="${posts}">
+            <h1>My Posts</h1>
+            <div th:each="post:${posts}">
+                <img th:src="${post.imageUrl}" height="150px" width="150px"><br>
+                <span th:text="${post.caption}"></span><br>
+                <span th:text="${post.postedTime}"></span><br>
+                <button>Edit</button><button>Delete</button>
+            </div>
+            <br>
+        </div>
 
-        <button class="add-post-btn">Add New Post</button>
+
+        <a href="/add-post"><button class="add-post-btn">Add New Post</button></a>
+        
+        <div th:if="${add}">
+        	<form action="/add-post" method="post" enctype="multipart/form-data">
+        	Image : <input type="file" name="image" required>
+			<br><br>
+			Caption: <input type="text" name="caption" required>
+			<br><br>
+			<button>Add</button>
+        	</form>
+        </div>
     </main>
 </body>
 </html></section></div>

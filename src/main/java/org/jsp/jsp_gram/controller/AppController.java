@@ -1,5 +1,6 @@
 package org.jsp.jsp_gram.controller;
 
+import org.jsp.jsp_gram.dto.Post;
 import org.jsp.jsp_gram.dto.User;
 import org.jsp.jsp_gram.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +69,8 @@ public class AppController {
 	}
 	
 	@GetMapping("/profile")
-	public String loadProfile(HttpSession session) {
-		return service.profile(session);
+	public String loadProfile(HttpSession session,ModelMap map) {
+		return service.profile(session,map);
 	}
 	
 	@GetMapping("/edit-profile")
@@ -80,5 +81,15 @@ public class AppController {
 	@PostMapping("/update-profile")
 	public String updateProfile(HttpSession session,@RequestParam MultipartFile image,@RequestParam String bio) {
 		return service.updateProfile(session,image,bio);
+	}
+	
+	@GetMapping("/add-post")
+	public String loadAddPost(ModelMap map,HttpSession session) {
+		return service.loadAddPost(map,session);
+	}
+	
+	@PostMapping("/add-post")
+	public String addPost(Post post,HttpSession session) {
+		return service.addPost(post,session);
 	}
 }
