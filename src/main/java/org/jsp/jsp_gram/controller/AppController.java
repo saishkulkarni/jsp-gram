@@ -67,29 +67,44 @@ public class AppController {
 	public String logout(HttpSession session) {
 		return service.logout(session);
 	}
-	
+
 	@GetMapping("/profile")
-	public String loadProfile(HttpSession session,ModelMap map) {
-		return service.profile(session,map);
+	public String loadProfile(HttpSession session, ModelMap map) {
+		return service.profile(session, map);
 	}
-	
+
 	@GetMapping("/edit-profile")
 	public String editProfile(HttpSession session) {
 		return service.editProfile(session);
 	}
-	
+
 	@PostMapping("/update-profile")
-	public String updateProfile(HttpSession session,@RequestParam MultipartFile image,@RequestParam String bio) {
-		return service.updateProfile(session,image,bio);
+	public String updateProfile(HttpSession session, @RequestParam MultipartFile image, @RequestParam String bio) {
+		return service.updateProfile(session, image, bio);
 	}
-	
+
 	@GetMapping("/add-post")
-	public String loadAddPost(ModelMap map,HttpSession session) {
-		return service.loadAddPost(map,session);
+	public String loadAddPost(ModelMap map, HttpSession session) {
+		return service.loadAddPost(map, session);
+	}
+
+	@PostMapping("/add-post")
+	public String addPost(Post post, HttpSession session) {
+		return service.addPost(post, session);
+	}
+
+	@GetMapping("/delete/{id}")
+	public String deletePost(@PathVariable int id, HttpSession session) {
+		return service.deletePost(id, session);
+	}
+
+	@GetMapping("/suggestions")
+	public String suggestions(HttpSession session,ModelMap map) {
+		return service.viewSuggestions(session,map);
 	}
 	
-	@PostMapping("/add-post")
-	public String addPost(Post post,HttpSession session) {
-		return service.addPost(post,session);
+	@GetMapping("/follow/{id}")
+	public String follow(@PathVariable int id,HttpSession session) {
+		return service.followUser(id,session);
 	}
 }

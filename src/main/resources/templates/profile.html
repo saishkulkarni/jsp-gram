@@ -150,6 +150,7 @@
 </head>
 
 <body>
+   
     <nav class="navbar">
         <div class="nav-content">
             <div class="logo">
@@ -161,7 +162,11 @@
             </div>
         </div>
     </nav>
-
+    <div class="message">
+        <h3 class="success-message" th:text="${session.pass}"></h3>
+        <h3 class="error-message" th:text="${session.fail}"></h3>
+        <th:block th:text="${@messageRemover.remove()}"></th:block>
+    </div>
     <main class="profile-container">
         <section class="profile-header">
             <img th:if="${session.user.imageUrl==null}"  src="https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png" alt="Profile Picture" class="profile-picture">
@@ -179,15 +184,19 @@
         <section class="stats-container">
             <div class="stat-item">
                 <h3>Posts</h3>
-                <span>0</span>
+                <span th:if="${posts==null}">0</span>
+                <span th:if="${posts}" th:text="${posts.size()}"></span>
             </div>
             <div class="stat-item">
                 <h3>Followers</h3>
-                <span>0</span>
+                <span th:text="${session.user.followers.size()}"></span>
             </div>
             <div class="stat-item">
                 <h3>Following</h3>
-                <span>0</span>
+                <span th:text="${session.user.following.size()}"></span>
+            </div>
+            <div class="stat-item">
+                <a href="/suggestions"><button>Suggestions</button></a>
             </div>
         </section>
 
@@ -197,7 +206,8 @@
                 <img th:src="${post.imageUrl}" height="150px" width="150px"><br>
                 <span th:text="${post.caption}"></span><br>
                 <span th:text="${post.postedTime}"></span><br>
-                <button>Edit</button><button>Delete</button>
+                <button>Edit</button>
+                <a th:href="'/delete/'+${post.id}"><button>Delete</button></a>
             </div>
             <br>
         </div>

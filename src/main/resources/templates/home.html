@@ -143,7 +143,11 @@
             </div>
         </div>
     </nav>
-
+    <div class="message">
+        <h3 class="success-message" th:text="${session.pass}"></h3>
+        <h3 class="error-message" th:text="${session.fail}"></h3>
+        <th:block th:text="${@messageRemover.remove()}"></th:block>
+    </div>
     <main class="main-content">
         <div class="all-caught-up">
             <div class="checkmark-circle">
