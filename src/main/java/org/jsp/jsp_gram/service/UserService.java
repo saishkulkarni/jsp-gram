@@ -1,5 +1,6 @@
 package org.jsp.jsp_gram.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -174,8 +175,7 @@ public class UserService {
 	public String loadAddPost(ModelMap map, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		if (user != null) {
-			map.put("add", "add");
-			return "profile.html";
+			return "add-post.html";
 		} else {
 			session.setAttribute("fail", "Invalid Session");
 			return "redirect:/login";
@@ -227,12 +227,12 @@ public class UserService {
 					}
 				}
 			}
-
+			suggestions.removeAll(usersToRemove);
 			if (suggestions.isEmpty()) {
 				session.setAttribute("fail", "No Suggestions");
 				return "redirect:/profile";
 			} else {
-				suggestions.removeAll(usersToRemove);
+
 				map.put("suggestions", suggestions);
 				return "suggestions.html";
 			}
@@ -253,6 +253,37 @@ public class UserService {
 			repository.save(folllowedUser);
 
 			return "redirect:/profile";
+		} else {
+			session.setAttribute("fail", "Invalid Session");
+			return "redirect:/login";
+		}
+	}
+
+	public String editPost(int id, HttpSession session, ModelMap map) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			Post post = postRepository.findById(id).get();
+			map.put("post", post);
+			return "edit-post.html";
+		} else {
+			session.setAttribute("fail", "Invalid Session");
+			return "redirect:/login";
+		}
+	}
+
+	public String updatePost(Post post, HttpSession session) throws IOException {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			if(!post.getImage().isEmpty())
+			post.setImageUrl(cloudinaryHelper.saveImage(post.getImage()));
+			else
+				post.setImageUrl(postRepository.findById(post.getId()).get().getImageUrl());
+			post.setUser(user);
+			postRepository.save(post);
+
+			session.setAttribute("pass", "Updated Success");
+			return "redirect:/profile";
+
 		} else {
 			session.setAttribute("fail", "Invalid Session");
 			return "redirect:/login";

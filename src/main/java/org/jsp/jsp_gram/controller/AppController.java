@@ -99,12 +99,22 @@ public class AppController {
 	}
 
 	@GetMapping("/suggestions")
-	public String suggestions(HttpSession session,ModelMap map) {
-		return service.viewSuggestions(session,map);
+	public String suggestions(HttpSession session, ModelMap map) {
+		return service.viewSuggestions(session, map);
 	}
-	
+
 	@GetMapping("/follow/{id}")
-	public String follow(@PathVariable int id,HttpSession session) {
-		return service.followUser(id,session);
+	public String follow(@PathVariable int id, HttpSession session) {
+		return service.followUser(id, session);
+	}
+
+	@GetMapping("/edit/{id}")
+	public String edit(@PathVariable int id, HttpSession session, ModelMap map) {
+		return service.editPost(id, session, map);
+	}
+
+	@PostMapping("/update-post")
+	public String updatePost(Post post, HttpSession session) throws Exception {
+		return service.updatePost(post, session);
 	}
 }
