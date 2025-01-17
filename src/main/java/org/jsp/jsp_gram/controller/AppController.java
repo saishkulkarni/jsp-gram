@@ -117,4 +117,20 @@ public class AppController {
 	public String updatePost(Post post, HttpSession session) throws Exception {
 		return service.updatePost(post, session);
 	}
+	
+	@GetMapping("/followers")
+	public String getFollowers(HttpSession session,ModelMap map) {
+		return service.getFollowers(session,map);
+	}
+	
+	@GetMapping("/following")
+	public String getFollowing(HttpSession session,ModelMap map) {
+		return service.getFollowing(session,map);
+	}
+	
+	@GetMapping("/unfollow/{id}")
+	public String unfollow(@PathVariable int id,HttpSession session) {
+		return service.unfollow(session,id);
+	}
+	
 }
