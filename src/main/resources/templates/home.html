@@ -149,6 +149,19 @@
         <th:block th:text="${@messageRemover.remove()}"></th:block>
     </div>
     <main class="main-content">
+
+        <div th:if="${posts}">
+            <div th:each="post:${posts}">
+                <img height="50px" width="50px" th:src="${post.user.imageUrl}">
+                <span th:text="${post.user.username}"></span>
+                <img height="250px" width="250px" th:src="${post.imageUrl}">
+                <span th:text="${post.caption}"></span>
+                <span th:text="${post.postedTime}"></span>
+                <button>Like</button>
+                <button>Comment</button>
+            </div>
+        </div>
+
         <div class="all-caught-up">
             <div class="checkmark-circle">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

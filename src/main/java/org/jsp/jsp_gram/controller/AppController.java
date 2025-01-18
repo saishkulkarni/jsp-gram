@@ -59,8 +59,8 @@ public class AppController {
 	}
 
 	@GetMapping("/home")
-	public String loadHome(HttpSession session) {
-		return service.loadHome(session);
+	public String loadHome(HttpSession session,ModelMap map) {
+		return service.loadHome(session,map);
 	}
 
 	@GetMapping("/logout")
@@ -133,4 +133,8 @@ public class AppController {
 		return service.unfollow(session,id);
 	}
 	
+	@GetMapping("/view-profile/{id}")
+	public String viewProfile(@PathVariable int id,HttpSession session,ModelMap map) {
+		return service.viewProfile(id,session,map);
+	}
 }
