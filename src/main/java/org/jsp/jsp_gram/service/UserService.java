@@ -124,9 +124,9 @@ public class UserService {
 		User user = (User) session.getAttribute("user");
 		if (user != null) {
 			List<User> users = user.getFollowing();
-			List<Post> posts=postRepository.findByUserIn(users);
-			if(!posts.isEmpty())
-			map.put("posts", posts);
+			List<Post> posts = postRepository.findByUserIn(users);
+			if (!posts.isEmpty())
+				map.put("posts", posts);
 			return "home.html";
 		} else {
 			session.setAttribute("fail", "Invalid Session");
@@ -360,12 +360,57 @@ public class UserService {
 	public String viewProfile(int id, HttpSession session, ModelMap map) {
 		User user = (User) session.getAttribute("user");
 		if (user != null) {
-			User checkedUser=repository.findById(id).get();
+			User checkedUser = repository.findById(id).get();
 			List<Post> posts = postRepository.findByUser(checkedUser);
 			if (!posts.isEmpty())
 				map.put("posts", posts);
 			map.put("user", checkedUser);
 			return "view-profile.html";
+		} else {
+			session.setAttribute("fail", "Invalid Session");
+			return "redirect:/login";
+		}
+	}
+
+	public String likePost(int id, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			Post post = postRepository.findById(id).get();
+			
+			boolean flag=true;
+			
+			for (User likedUser : post.getLikedUsers()) {
+				if (likedUser.getId() == user.getId()) {
+					flag=false;
+					break;
+				}
+			}
+			if(flag) {
+				post.getLikedUsers().add(user);
+			}
+
+			postRepository.save(post);
+			return "redirect:/home";
+		} else {
+			session.setAttribute("fail", "Invalid Session");
+			return "redirect:/login";
+		}
+	}
+
+	public String dislikePost(int id, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			Post post = postRepository.findById(id).get();
+			
+			for (User likedUser : post.getLikedUsers()) {
+				if (likedUser.getId() == user.getId()) {
+					post.getLikedUsers().remove(likedUser);
+					break;
+				}
+			}
+
+			postRepository.save(post);
+			return "redirect:/home";
 		} else {
 			session.setAttribute("fail", "Invalid Session");
 			return "redirect:/login";
