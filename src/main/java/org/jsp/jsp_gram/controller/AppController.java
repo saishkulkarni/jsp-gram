@@ -1,5 +1,6 @@
 package org.jsp.jsp_gram.controller;
 
+import org.jsp.jsp_gram.dto.Comment;
 import org.jsp.jsp_gram.dto.Post;
 import org.jsp.jsp_gram.dto.User;
 import org.jsp.jsp_gram.service.UserService;
@@ -59,8 +60,8 @@ public class AppController {
 	}
 
 	@GetMapping("/home")
-	public String loadHome(HttpSession session,ModelMap map) {
-		return service.loadHome(session,map);
+	public String loadHome(HttpSession session, ModelMap map) {
+		return service.loadHome(session, map);
 	}
 
 	@GetMapping("/logout")
@@ -117,34 +118,44 @@ public class AppController {
 	public String updatePost(Post post, HttpSession session) throws Exception {
 		return service.updatePost(post, session);
 	}
-	
+
 	@GetMapping("/followers")
-	public String getFollowers(HttpSession session,ModelMap map) {
-		return service.getFollowers(session,map);
+	public String getFollowers(HttpSession session, ModelMap map) {
+		return service.getFollowers(session, map);
 	}
-	
+
 	@GetMapping("/following")
-	public String getFollowing(HttpSession session,ModelMap map) {
-		return service.getFollowing(session,map);
+	public String getFollowing(HttpSession session, ModelMap map) {
+		return service.getFollowing(session, map);
 	}
-	
+
 	@GetMapping("/unfollow/{id}")
-	public String unfollow(@PathVariable int id,HttpSession session) {
-		return service.unfollow(session,id);
+	public String unfollow(@PathVariable int id, HttpSession session) {
+		return service.unfollow(session, id);
 	}
-	
+
 	@GetMapping("/view-profile/{id}")
-	public String viewProfile(@PathVariable int id,HttpSession session,ModelMap map) {
-		return service.viewProfile(id,session,map);
+	public String viewProfile(@PathVariable int id, HttpSession session, ModelMap map) {
+		return service.viewProfile(id, session, map);
 	}
-	
+
 	@GetMapping("/like/{id}")
-	public String likePost(@PathVariable int id,HttpSession session) {
-		return service.likePost(id,session);
+	public String likePost(@PathVariable int id, HttpSession session) {
+		return service.likePost(id, session);
 	}
-	
+
 	@GetMapping("/dislike/{id}")
-	public String dislikePost(@PathVariable int id,HttpSession session) {
-		return service.dislikePost(id,session);
+	public String dislikePost(@PathVariable int id, HttpSession session) {
+		return service.dislikePost(id, session);
+	}
+
+	@GetMapping("/comment/{id}")
+	public String loadCommentPage(@PathVariable int id, HttpSession session, ModelMap map) {
+		return service.loadCommentPage(id, session, map);
+	}
+
+	@PostMapping("/comment/{id}")
+	public String comment(@PathVariable int id, HttpSession session, @RequestParam String comment) {
+		return service.comment(id,session,comment);
 	}
 }

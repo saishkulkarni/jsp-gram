@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.jsp.jsp_gram.dto.Comment;
 import org.jsp.jsp_gram.dto.Post;
 import org.jsp.jsp_gram.dto.User;
 import org.jsp.jsp_gram.helper.AES;
@@ -376,16 +377,16 @@ public class UserService {
 		User user = (User) session.getAttribute("user");
 		if (user != null) {
 			Post post = postRepository.findById(id).get();
-			
-			boolean flag=true;
-			
+
+			boolean flag = true;
+
 			for (User likedUser : post.getLikedUsers()) {
 				if (likedUser.getId() == user.getId()) {
-					flag=false;
+					flag = false;
 					break;
 				}
 			}
-			if(flag) {
+			if (flag) {
 				post.getLikedUsers().add(user);
 			}
 
@@ -401,7 +402,7 @@ public class UserService {
 		User user = (User) session.getAttribute("user");
 		if (user != null) {
 			Post post = postRepository.findById(id).get();
-			
+
 			for (User likedUser : post.getLikedUsers()) {
 				if (likedUser.getId() == user.getId()) {
 					post.getLikedUsers().remove(likedUser);
@@ -410,6 +411,37 @@ public class UserService {
 			}
 
 			postRepository.save(post);
+			return "redirect:/home";
+		} else {
+			session.setAttribute("fail", "Invalid Session");
+			return "redirect:/login";
+		}
+	}
+
+	public String loadCommentPage(int id, HttpSession session, ModelMap map) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			map.put("id", id);
+			return "comment.html";
+		} else {
+			session.setAttribute("fail", "Invalid Session");
+			return "redirect:/login";
+		}
+	}
+
+	public String comment(int id, HttpSession session, String comment) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			Post post = postRepository.findById(id).get();
+			
+			Comment userComment=new Comment();
+			userComment.setComment(comment);
+			userComment.setUser(user);
+			
+			post.getComments().add(userComment);
+
+			postRepository.save(post);
+
 			return "redirect:/home";
 		} else {
 			session.setAttribute("fail", "Invalid Session");
