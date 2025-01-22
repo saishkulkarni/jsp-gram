@@ -53,6 +53,7 @@ public class User {
 
 	private String bio;
 	private String imageUrl;
+	private boolean prime;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	List<User> followers = new ArrayList<User>();
@@ -63,15 +64,15 @@ public class User {
 	public boolean isFollowing() {
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		HttpSession session = attributes.getRequest().getSession();
-		User user=(User) session.getAttribute("user");
-		if(user!=null) {
-			for(User user2:user.following) {
-				if(this.id==user2.id) {
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			for (User user2 : user.following) {
+				if (this.id == user2.id) {
 					return true;
 				}
 			}
 			return false;
-		}else {
+		} else {
 			return false;
 		}
 	}
